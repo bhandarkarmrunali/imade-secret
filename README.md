@@ -1,2 +1,2 @@
 # imade-secret
-# it become verry sercret
+# it become very secret
