@@ -47,5 +47,10 @@ pipeline {
                  docker system prune -a -f '''
             }
         }
+         post('email') {
+            success {
+               emailext body: 'email sent out from jenkins', subject: 'test email', to: 'beinfinity365@gmail.com'
+            }
+        }
      }
 }
