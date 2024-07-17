@@ -2,49 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('git checkout') {
+        stage('build') {
             steps {
-                git branch: 'master', url: 'https://github.com/bhandarkarmrunali/student-ui.git'
-            }
-        }
-        
-        stage('docker stage') {
-            steps {
-
-                sh ''' apt update && apt install docker.io -y && apt install -y awscli
-                  docker build -t demo .'''
-            }
-        }
-        stage('make aws dir') {
-            steps {
-                sh '''
-                mkdir -p ~/.aws
-                touch ~/.aws/credentials
-                
-                '''
-            }
-        }
-        stage('aws config') {
-            steps {
-                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'mrunal-aws-cred', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-       sh '''  cat << EOF > ~/.aws/credentials
-                [default]
-                aws_access_key_id = ${AWS_ACCESS_KEY_ID}
-                aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}
-                 '''
-                 sh ''' aws s3 ls  '''
-
-}
-
-            }
-        }
-        stage('docker push') {
-            steps {
-                sh '''
-                aws ecr get-login-password --region ap-south-1 |    docker login --username AWS --password-stdin 190074615564.dkr.ecr.ap-south-1.amazonaws.com
-                 docker tag demo 190074615564.dkr.ecr.ap-south-1.amazonaws.com/new-repo:$BUILD_TIMESTAMP
-                 docker push 190074615564.dkr.ecr.ap-south-1.amazonaws.com/new-repo:$BUILD_TIMESTAMP
-                 docker system prune -a -f '''
+               echo "building the email for project"
             }
         }
          post('email') {
