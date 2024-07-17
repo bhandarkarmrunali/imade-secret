@@ -7,10 +7,12 @@ pipeline {
                echo "building the email for project"
             }
         }
+    stages('email notification'){
          post('email') {
             success {
                emailext body: 'email sent out from jenkins', subject: 'test email', to: 'beinfinity365@gmail.com'
             }
         }
      }
+  }
 }
